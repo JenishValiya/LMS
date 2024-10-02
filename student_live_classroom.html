@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Class - Teacher</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+
+
+    <style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+#videos {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px; 
+}
+.video-container {
+    justify-content: center;
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+}
+video {
+    width: 150%; 
+    max-width: 400px; 
+    height: auto;
+    background: black;
+    border-radius: 8px; 
+}
+
+.controls {
+    display: flex; 
+    justify-content: center; 
+    margin-top: 20px; 
+    flex-wrap: wrap;
+}
+
+
+button {
+    padding: 10px; 
+    background-color: #007BFF; 
+    border: none; 
+    border-radius: 50%; 
+    color: white; 
+    cursor: pointer;
+    transition: background-color 0.3s; 
+    display: flex; 
+    align-items: center;
+    justify-content: center; 
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button i {
+    font-size: 18px; 
+}
+    </style>
+</head>
+<body>
+    <h1>Live Class (student)</h1>
+    <div id="videos">
+        <!-- <div class="video-container">
+            <video id="teacherVideo" autoplay playsinline></video>
+            <div class="controls">
+                <button onclick="startLiveClass()"><i class="fas fa-video"></i></button>
+                <button onclick="startScreenShare()"><i class="fas fa-desktop"></i></button>
+                <button onclick="toggleWhiteboard()"><i class="fas fa-chalkboard-teacher"></i></button>
+                <button onclick="clearWhiteboard()"><i class="fas fa-eraser"></i></button>
+                <button onclick="toggleMic()"><i class="fas fa-microphone"></i></button>
+                <button onclick="toggleVideo()"><i class="fas fa-video-slash"></i></button>
+                <button onclick="stopLiveClass()"><i class="fas fa-stop-circle"></i></button>
+                <button onclick="saveLecture()"><i class="fas fa-save"></i></button>
+            </div>
+        </div> -->
+        <div class="video-container">
+            <video id="studentVideo" autoplay playsinline></video>
+            <div class="controls">
+                <!-- <button onclick="startLiveClass()"><i class="fas fa-video"></i></button> -->
+                <button onclick="startScreenShare()"><i class="fas fa-desktop"></i></button>
+                <!-- <button onclick="toggleWhiteboard()"><i class="fas fa-chalkboard-teacher"></i></button> -->
+                <!-- <button onclick="clearWhiteboard()"><i class="fas fa-eraser"></i></button> -->
+                <button onclick="toggleMic()"><i class="fas fa-microphone"></i></button>
+                <button onclick="toggleVideo()"><i class="fas fa-video-slash"></i></button>
+                <!-- <button onclick="stopLiveClass()"><i class="fas fa-stop-circle"></i></button> -->
+                <!-- <button onclick="saveLecture()"><i class="fas fa-save"></i></button> -->
+            </div>
+        </div>
+    </div>
+    <!-- <canvas id="whiteboard" width="800" height="600"></canvas> -->
+    <script>
+        const peerConnectionConfig = {
+    iceServers: [
+        { urls: "stun:stun.l.google.com:19302" } 
+    ]
+};
+
+let localStream; 
+let peerConnection; 
+let signalingServer = new WebSocket('wss://your_signaling_server_url'); 
+signalingServer.onmessage = async (message) => {
+    const data = JSON.parse(message.data);
+
+    if (data.action === 'offer') {
+        await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
+        const answer = await peerConnection.createAnswer();
+        await peerConnection.setLocalDescription(answer);
+        signalingServer.send(JSON.stringify({ action: 'answer', answer: peerConnection.localDescription }));
+    } else if (data.action === 'answer') {
+        await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
+    } else if (data.action === 'iceCandidate') {
+        await peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
+    }
+};
+
+// async function startLiveClass() {
+//     localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+
+//     const teacherVideo = document.getElementById('teacherVideo');
+//     teacherVideo.srcObject = localStream;
+
+//     peerConnection = new RTCPeerConnection(peerConnectionConfig);
+
+//     localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+
+//     peerConnection.ontrack = (event) => {
+//         const studentVideo = document.getElementById('studentVideo');
+//         studentVideo.srcObject = event.streams[0];
+//     };
+
+//     peerConnection.onicecandidate = (event) => {
+//         if (event.candidate) {
+//             signalingServer.send(JSON.stringify({ action: 'iceCandidate', candidate: event.candidate }));
+//         }
+//     };
+
+//     const offer = await peerConnection.createOffer();
+//     await peerConnection.setLocalDescription(offer);
+//     signalingServer.send(JSON.stringify({ action: 'offer', offer: peerConnection.localDescription }));
+// }
+
+async function joinLiveClass() {
+    localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+
+    const studentVideo = document.getElementById('studentVideo');
+    studentVideo.srcObject = localStream;
+
+    peerConnection = new RTCPeerConnection(peerConnectionConfig);
+
+    localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+
+    peerConnection.ontrack = (event) => {
+        const teacherVideo = document.getElementById('teacherVideo');
+        teacherVideo.srcObject = event.streams[0];
+    };
+
+    peerConnection.onicecandidate = (event) => {
+        if (event.candidate) {
+            signalingServer.send(JSON.stringify({ action: 'iceCandidate', candidate: event.candidate }));
+        }
+    };
+
+}
+async function startScreenShare() {
+    try {
+        const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+        const screenVideo = document.createElement('video');
+        screenVideo.srcObject = screenStream;
+        screenVideo.autoplay = true;
+        document.body.appendChild(screenVideo);
+
+        screenStream.getTracks().forEach(track => peerConnection.addTrack(track, screenStream));
+    } catch (error) {
+        console.error('Error sharing screen.', error);
+    }
+}
+function stopStream(stream) {
+    stream.getTracks().forEach(track => track.stop());
+}
+
+function stopLiveClass() {
+    if (localStream) {
+        stopStream(localStream);
+    }
+    if (peerConnection) {
+        peerConnection.close();
+    }
+}
+        let isMicOn = true;   
+        let isVideoOn = true; 
+
+        function toggleMic() {
+            if (localStream) {
+                const audioTrack = localStream.getAudioTracks()[0]; 
+            if (audioTrack) {
+                isMicOn = !isMicOn; 
+                audioTrack.enabled = isMicOn; 
+    }
+}}
+
+function toggleVideo() {
+    if (localStream) {
+        const videoTrack = localStream.getVideoTracks()[0]; 
+        if (videoTrack) {
+            isVideoOn = !isVideoOn; 
+            videoTrack.enabled = isVideoOn; 
+        }
+    }
+}
+
+        function toggleWhiteboard() {
+    const whiteboard = document.getElementById('whiteboard');
+    if (whiteboard.style.display === 'none' || whiteboard.style.display === '') {
+        whiteboard.style.display = 'block'; // Show the whiteboard
+    } else {
+        whiteboard.style.display = 'none';  // Hide the whiteboard
+    }
+}
+function clearWhiteboard() {
+    const canvas = document.getElementById('whiteboard');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the entire canvas
+}
+
+        const canvas = document.getElementById('whiteboard');
+        const ctx = canvas.getContext('2d');
+
+        
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            lastX = e.offsetX;
+            lastY = e.offsetY;
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDrawing) return;
+
+            ctx.strokeStyle = 'black'; 
+            ctx.lineWidth = 2; 
+            ctx.lineCap = 'round'; 
+
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+
+            lastX = e.offsetX;
+            lastY = e.offsetY;
+        });
+
+        // Stop drawing
+        canvas.addEventListener('mouseup', () => {
+            isDrawing = false;
+        });
+        canvas.addEventListener('mouseout', () => {
+            isDrawing = false;
+        });
+    </script>
+
+    <script src="../static/js/app.js"></script>
+</body>
+</html>

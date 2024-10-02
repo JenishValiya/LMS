@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .admin-function {
+            display: none;
+        }
+        .admin-function.active {
+            display: block;
+        }
+        button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+
+        <div class="admin-actions">
+            <button onclick="showFunctionality('createUser')">Create User</button>
+            <button onclick="showFunctionality('deleteUser')">Delete User</button>
+            <button onclick="showFunctionality('blockUser')">Block User</button>
+            <button onclick="showFunctionality('editTimetable')">Edit Timetable</button>
+            <button onclick="showFunctionality('modifyAttendance')">Modify Attendance</button>
+            <button onclick="showFunctionality('viewReports')">View Reports</button>
+        </div>
+
+        <div id="createUser" class="admin-function">
+            <h2>Create User</h2>
+            <form>
+                <label>Username: <input type="text" id="newUsername" placeholder="Enter username"></label><br>
+                <label>Password: <input type="password" id="newPassword" placeholder="Enter password"></label><br>
+                <button type="button" onclick="createUser()">Create User</button>
+            </form>
+        </div>
+
+        <div id="deleteUser" class="admin-function">
+            <h2>Delete User</h2>
+            <label>Username: <input type="text" id="deleteUsername" placeholder="Enter username"></label><br>
+            <button type="button" onclick="deleteUser()">Delete User</button>
+        </div>
+
+        <div id="blockUser" class="admin-function">
+            <h2>Block User</h2>
+            <label>Username: <input type="text" id="blockUsername" placeholder="Enter username"></label><br>
+            <button type="button" onclick="blockUser()">Block User</button>
+        </div>
+
+        <div id="editTimetable" class="admin-function">
+            <h2>Edit Timetable</h2>
+            <button>Edit Timetable functionality</button>
+        </div>
+
+        <div id="modifyAttendance" class="admin-function">
+            <h2>Modify Attendance</h2>
+            <button>Modify Attendance functionality</button>
+        </div>
+
+        <div id="viewReports" class="admin-function">
+            <h2>View Reports</h2>
+            <button>View Reports functionality</button>
+        </div>
+    </div>
+
+    <script>
+        function showFunctionality(functionalityId) {
+            const sections = document.querySelectorAll('.admin-function');
+            sections.forEach(section => section.classList.remove('active'));
+
+            const selectedSection = document.getElementById(functionalityId);
+            selectedSection.classList.add('active');
+        }
+
+        function createUser() {
+            const username = document.getElementById('newUsername').value;
+            const password = document.getElementById('newPassword').value;
+            alert(`Creating user ${username} with password ${password}`);
+        }
+
+        function deleteUser() {
+            const username = document.getElementById('deleteUsername').value;
+            alert(`Deleting user ${username}`);
+        }
+
+        function blockUser() {
+            const username = document.getElementById('blockUsername').value;
+            alert(`Blocking user ${username}`);
+        }
+    </script>
+</body>
+</html>

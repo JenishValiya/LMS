@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Other Login</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h2>Other User Login</h2>
+            <form id="otherLoginForm" method="POST" action="{{ url_for('other_login') }}" onsubmit="return validateOtherLoginForm()">
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="input-group">
+                    <label for="user_type">Role</label>
+                    <select id="user_type" name="user_type" required>
+                        <option value="admin">Admin</option>
+                        <option value="hod">HOD</option>
+                        <option value="parent">Parent</option>
+                    </select>
+                </div>
+                <button type="submit" class="login-btn">Login</button>
+                <a href="forgot_password.html" class="forgot-password">Forgot Password?</a>
+            </form>
+        </div>
+    </div>
+    <script>
+        function validateOtherLoginForm() {
+            var userType = document.getElementById("user_type").value;
+
+            if (userType === "admin") {
+                window.location.href = "admin.html";
+            } else if (userType === "hod") {
+                window.location.href = "hod.html";
+            } else if (userType === "parent") {
+                window.location.href = "parents.html";
+            }
+
+            return false;
+        }
+    </script>
+</body>
+</html>

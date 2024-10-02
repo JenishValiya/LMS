@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOD Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, HOD!</h1>
+        <div class="dashboard">
+            <button onclick="manageCourses()">Manage Courses</button>
+            <button onclick="manageFaculty()">Manage Faculty</button>
+            <button onclick="scheduleClasses()">Schedule Classes</button>
+            <button onclick="reviewStudentPerformance()">Review Student Performance</button>
+            <button onclick="generateReports()">Generate Reports</button>
+        </div>
+    </div>
+
+    <script>
+        function manageCourses() {
+            window.location.href = 'manage_courses.html';
+        }
+
+        function manageFaculty() {
+            window.location.href = 'manage_faculty.html';
+        }
+
+        function scheduleClasses() {
+            window.location.href = 'schedule_classes.html';
+        }
+
+        function reviewStudentPerformance() {
+            window.location.href = 'review_performance.html';
+        }
+
+        function generateReports() {
+            window.location.href = 'generate_reports.html';
+        }
+    </script>
+</body>
+</html>
+

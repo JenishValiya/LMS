@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Management</title>
+<!-- For Front-End Testing -->
+<link rel="stylesheet" href="../static/css/style.css">
+
+<!-- For Flask Back-End -->
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class="sidebar">
+         
+              <div class="logo">
+                  <a href="#"><img width="70px" height="auto" src="../static/image/logo.jpeg" alt=""></a>
+              </div>
+              <li onclick="hideSidebar()"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" ><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a></li>
+              <li><a href="staff_home.html">Home</a></li>
+              <li><a href="staff_classroom.html">Classroom</a></li>
+              <li><a href="staff_attendance.html">Attendance</a></li>
+              <li><a href="staff_timetable.html">Timetable</a></li>
+              <li><a href="staff_view_details.html">View Details</a></li>
+              <li><a href="login.html">Logout</a></li>
+          </ul>
+          <ul>
+              <div class="logo">
+                  <a href="#"><img width="70px" height="auto" src="../static/image/logo.jpeg" alt=""></a>
+              </div>
+              <li class="hideOnMobile"><a href="staff_home.html">Home</a></li>
+              <li class="hideOnMobile"><a href="staff_classroom.html">Classroom</a></li>
+              <li class="hideOnMobile"><a href="staff_attendance.html">Attendance</a></li>
+              <li class="hideOnMobile"><a href="staff_timetable.html">Timetable</a></li>
+              <li class="hideOnMobile"><a href="staff_view_details.html">View Details</a></li>
+              <li class="hideOnMobile"><a href="login.html">Logout</a></li>
+              <li class="menu-button" onclick="showSidebar()"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" ><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+  
+          </ul>
+          </nav>
+          
+          <!-- <nav>
+            <ul class="sidebar">
+         
+              <div class="logo">
+                  <a href="#"><img width="70px" height="auto" src="../static/image/logo.jpeg" alt=""></a>
+              </div>
+              <li onclick="hideSidebar()"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" ><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a></li>
+              <li><a href="{{ url_for('staff_home') }}">Home</a></li>
+              <li><a href="{{ url_for('staff_classroom') }}">Classroom</a></li>
+              <li><a href="{{ url_for('staff_attendance') }}">Attendance</a></li>
+              <li><a href="{{ url_for('staff_timetable') }}">Timetable</a></li>
+              <li><a href="{{ url_for('staff_view_details') }}">View Details</a></li>
+              <li><a href="{{ url_for('login') }}">Logout</a></li>
+          </ul>
+          <ul>
+              <div class="logo">
+                  <a href="#"><img width="70px" height="auto" src="../static/image/logo.jpeg" alt=""></a>
+              </div>
+              <li class="hideOnMobile"><a href="{{ url_for('staff_home') }}">Home</a></li>
+              <li class="hideOnMobile"><a href="{{ url_for('staff_classroom') }}">Classroom</a></li>
+              <li class="hideOnMobile"><a href="{{ url_for('staff_attendance') }}">Attendance</a></li>
+              <li class="hideOnMobile"><a href="{{ url_for('staff_timetable') }}">Timetable</a></li>
+              <li class="hideOnMobile"><a href="{{ url_for('staff_timetable') }}">View Details</a></li>
+              <li class="hideOnMobile"><a href="{{ url_for('login') }}">Logout</a></li>
+              <li class="menu-button" onclick="showSidebar()"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" ><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+  
+          </ul>
+          </nav> -->
+  
+    </header>
+    <main>
+        <div class="container">
+            <h1>Attendance Management</h1>
+            <div id="attendanceSection" class="section">
+                <h3>Attendance Management</h3>
+                <form method="POST" action="{{ url_for('staff_attendance') }}">
+                    <label for="attendance_data">Update Attendance:</label><br>
+                    <textarea id="attendance_data" name="attendance_data" rows="4" cols="50">Enter updated attendance data here...</textarea><br><br>
+                    <button type="submit">Save Attendance</button>
+                </form>
+            </div>
+        </div>
+    </main>
+ <!-- For Front-End Testing -->
+ <script src="../static/js/script.js"></script>
+
+ <!-- For Flask Back-End -->
+ <!-- <script src="{{ url_for('static', filename='js/script.js') }}"></script> -->
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Quiz</title>
+</head>
+<body>
+    <h2>Create Quiz</h2>
+    <form id="createQuizForm">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+        <br>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea>
+        <br>
+        <label for="start_time">Start Time:</label>
+        <input type="datetime-local" id="start_time" name="start_time" required>
+        <br>
+        <label for="end_time">End Time:</label>
+        <input type="datetime-local" id="end_time" name="end_time" required>
+        <br>
+        <label for="questions">Questions (JSON format):</label>
+        <textarea id="questions" name="questions" rows="10" required></textarea>
+        <br>
+        <button type="submit">Create Quiz</button>
+    </form>
+ <!-- For Front-End Testing -->
+ <script src="../static/js/script.js"></script>
+
+ <!-- For Flask Back-End -->
+ <!-- <script src="{{ url_for('static', filename='js/script.js') }}"></script> -->
+</body> 
+ </html>
